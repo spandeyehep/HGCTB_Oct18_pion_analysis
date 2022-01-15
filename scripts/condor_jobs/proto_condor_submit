@@ -1,0 +1,11 @@
+executable=/home/work/spandey/public/HGCAL/CERN_TB/octTB/CMSSW_9_3_0/src/pion_analysis/newTree_showerShapes_inclusive_SS_faster/condor_jobs/run_myprog.sh
+universe=vanilla
+Arguments=FILELIST OUTPUT SAMPLE ENERGY
+Input =
+Output = /home/work/spandey/public/HGCAL/CERN_TB/octTB/CMSSW_9_3_0/src/pion_analysis/newTree_showerShapes_inclusive_SS_faster/condor_jobs/condor_output/condor_logs/condor_JOBNAME.out
+Error  = /home/work/spandey/public/HGCAL/CERN_TB/octTB/CMSSW_9_3_0/src/pion_analysis/newTree_showerShapes_inclusive_SS_faster/condor_jobs/condor_output/condor_logs/condor_JOBNAME.err
+Log    = /home/work/spandey/public/HGCAL/CERN_TB/octTB/CMSSW_9_3_0/src/pion_analysis/newTree_showerShapes_inclusive_SS_faster/condor_jobs/condor_output/condor_logs/condor_JOBNAME.log
+notification=never
+should_transfer_files=YES
+when_to_transfer_output = ON_EXIT
+queue
