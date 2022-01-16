@@ -28,3 +28,11 @@ Example: <br/>
 `HGCNtupleVariables.h`: Tree variable initialization <br/>
 `txt_maps/`: Dependencies  <br/>
 
+### Important flags: <br/>
+`AnalyzeHGCOctTB.cc` has following three flags in `main(...)` function:<br/> <br/>
+`shower`: Set `true` for shower energy histograms <br/>
+`longi` : Set `true` for longitudinal shower profiles <br/>
+`trans` : Set `true` for transverse shower profiles <br/>
+
+<br/>
+It is recommeded that only flag is set to `true` for minimum resource consumption.
