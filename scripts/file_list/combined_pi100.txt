@@ -1,0 +1,1 @@
+/home/work/spandey/public/HGCAL/CERN_TB/octTB/CMSSW_9_3_0/src/sim_sample/withAHCAL/HadInt/fromAshim/ntuple_sim_config22_pdgID211_beamMomentum100_listFTFP_BERT_EMN.root

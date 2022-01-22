@@ -1,24 +1,5 @@
 #define HGCNtupleVariables_cxx
-//the following are UBUNTU/LINUX, and MacOS ONLY terminal color codes.
-#define RESET   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
-#define BLUE    "\033[34m"      /* Blue */
-#define MAGENTA "\033[35m"      /* Magenta */
-#define CYAN    "\033[36m"      /* Cyan */
-#define WHITE   "\033[37m"      /* White */
-#define BOLDBLACK   "\033[1m\033[30m"      /* Bold Black */
-#define BOLDRED     "\033[1m\033[31m"      /* Bold Red */
-#define BOLDGREEN   "\033[1m\033[32m"      /* Bold Green */
-#define BOLDYELLOW  "\033[1m\033[33m"      /* Bold Yellow */
-#define BOLDBLUE    "\033[1m\033[34m"      /* Bold Blue */
-#define BOLDMAGENTA "\033[1m\033[35m"      /* Bold Magenta */
-#define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
-#define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
-
-#include "../interface/HGCNtupleVariables.h"
+#include "HGCNtupleVariables.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -41,6 +22,34 @@ int HGCNtupleVariables::getBIN(unsigned int skiroc,unsigned int channel) {
 }
 
 
+int HGCNtupleVariables::getNextLayer(float had_z_) {
+
+  
+  //float delta_z_ = 100000.0;
+  if(had_z_ < -5000.0) return -1;
+    for(int i = 1; i <= 79; i++){
+      float cm_ = layer_positions[i].at(0);
+       if(had_z_ < cm_) return i;
+      // return i;
+      // if(had_z_ > cm_) continue;
+      // return i;
+    }
+
+
+    return -1;
+  // if(had_z_ < 0.0) return 1;
+  // else {
+  //   float delta_z_ = 100000.0;
+  //   for(int i = 1; i <= 79; i++){
+  //     float cm_ = layer_positions[i].at(0);
+  //     if(had_z_ > cm_) continue;
+  //     return i;
+  //   }
+  // }
+  // return 111;
+}
+
+
 std::vector<int> HGCNtupleVariables::getModuleLocation(int moduleID) {
   std::map<int, std::vector<int>>::iterator it = module_map.find(moduleID);
   if(it != module_map.end()){
@@ -50,47 +59,6 @@ std::vector<int> HGCNtupleVariables::getModuleLocation(int moduleID) {
     return std::vector<int>();
   }
 }
-
-std::vector<float> HGCNtupleVariables::getLayerPosition(int layer_) {
-  std::map<int, std::vector<float>>::iterator it = layer_positions.find(layer_);
-  if(it != layer_positions.end()){
-    return it->second;
-  }
-  else {
-    return std::vector<float>();
-  }
-}
-
-std::vector<float> HGCNtupleVariables::getWeights(int beamEnergy_) {
-  std::map<int, std::vector<float>>::iterator it = rel_weights.find(beamEnergy_);
-  if(it != rel_weights.end()){
-    return it->second;
-  }
-  else {
-    return std::vector<float>();
-  }
-}
-
-std::vector<float> HGCNtupleVariables::getChi2Weights_EH(int beamEnergy_) {
-  std::map<int, std::vector<float>>::iterator it = chi2_weights_EH.find(beamEnergy_);
-  if(it !=chi2_weights_EH.end()){
-    return it->second;
-  }
-  else {
-    return std::vector<float>();
-  }
-}
-
-std::vector<float> HGCNtupleVariables::getChi2Weights_H(int beamEnergy_) {
-  std::map<int, std::vector<float>>::iterator it = chi2_weights_H.find(beamEnergy_);
-  if(it !=chi2_weights_H.end()){
-    return it->second;
-  }
-  else {
-    return std::vector<float>();
-  }
-}
-
 
 std::pair<float,float> HGCNtupleVariables::dxy_alignment(int layer) {
   //int temp_find = layer;
@@ -108,7 +76,10 @@ std::pair<float,float> HGCNtupleVariables::dxy_alignment(int layer) {
 }
 
 float HGCNtupleVariables::getNoise(std::pair<int,int> mod_chip) {
+  //int temp_find = layer;
+  //std::pair<float,float> temp_dXY = std::make_pair(-999.0,-999.0);
   float temp_noise = -1.0;
+  //std::map<std::pair<int,int>, std::pair<float,float> >::iterator it = align_map.find(temp_find);
   std::map<std::pair<int,int>, float >::iterator it = noise_map.find(mod_chip);
   if(it != noise_map.end()) {
     temp_noise = it->second;
@@ -117,6 +88,30 @@ float HGCNtupleVariables::getNoise(std::pair<int,int> mod_chip) {
     std::cout<<"Value NOT found for Module = "<<mod_chip.first<<" & chip = "<<mod_chip.second<<std::endl;
   }
   return temp_noise;
+}
+
+
+float HGCNtupleVariables::getMIPRatio(std::pair<int,int> mod_chip) {
+  //int temp_find = layer;
+  //std::pair<float,float> temp_dXY = std::make_pair(-999.0,-999.0);
+  float temp_ratio = -1.0;
+  //std::map<std::pair<int,int>, std::pair<float,float> >::iterator it = align_map.find(temp_find);
+  std::map<std::pair<int,int>, float >::iterator it = mip_ratio_map.find(mod_chip);
+  if(it != mip_ratio_map.end()) {
+    temp_ratio = it->second;
+  }
+  else {
+    //std::cout<<"Value NOT found for Module = "<<mod_chip.first<<" & chip = "<<mod_chip.second<<std::endl;
+  }
+  return temp_ratio;
+}
+
+double HGCNtupleVariables::getLeadingKE(vector<double> list) {
+  double max = 0.0;
+  for(int i = 0; i < list.size(); i++) {
+    if(list.at(i) > max) max = list.at(i);
+  }
+  return max;
 }
 
 //double HGCNtupleVariables::shower_comparisons(TProfile* shower, TH1F* hist) {

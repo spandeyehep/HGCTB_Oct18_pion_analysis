@@ -4,8 +4,8 @@ CXXFLAGS= $(shell root-config --cflags)
 LIBS    = $(shell root-config --libs) 
 
 
-SOURCES = ./source/RecHit_AHCAL.cc ./source/LateralSquares.cc ./source/RecHit.cc ./source/LateralRings.cc ./source/HGCNtupleVariables.cc ./source/AnalyzeHGCOctTB.cc 
-HEADERS = ./interface/RecHit_AHCAL.h ./interface/LateralSquares.h ./interface/RecHit.h ./interface/LateralRings.h ./interface/HGCNtupleVariables.h ./interface/AnalyzeHGCOctTB.h 
+SOURCES = HGCNtupleVariables.cc AnalyzeHGCOctTB.cc 
+HEADERS = HGCNtupleVariables.h AnalyzeHGCOctTB.h 
 OBJECTS = $(SOURCES:.cc=.o)
 
 EXECUTABLE = analyzeHGCOctTB
@@ -33,9 +33,5 @@ clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)
 
 ###
-RecHit.o: ./interface/RecHit.h
-LateralRings.o: ./interface/LateralRings.h
-RecHit_AHCAL.o: ./interface/RecHit_AHCAL.h
-LateralSquares.o: ./interface/LateralSquares.h
-HGCNtupleVariables.o: ./interface/HGCNtupleVariables.h
-AnalyzeHGCOctTB.o: ./interface/RecHit.h ./interface/LateralRings.h ./interface/HGCNtupleVariables.h ./interface/AnalyzeHGCOctTB.h
+HGCNtupleVariables.o: HGCNtupleVariables.h
+AnalyzeHGCOctTB.o:HGCNtupleVariables.h AnalyzeHGCOctTB.h
